@@ -1,8 +1,8 @@
 backend-build:
-	docker build -t ehuan2/srs-backend:latest -f Dockerfile ./src
+	docker build -t ehuan2/srs_backend:latest -f Dockerfile ./src
 
 run:
-	docker-compose up
+	docker compose --env-file .env up
 
 .PHONY: clean
 clean:
