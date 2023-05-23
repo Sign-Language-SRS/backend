@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  backend:
+    image: ehuan2/srs_backend:latest
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    environment:
+      PYTHONUNBUFFERED: 1
+    command: ["python", "app.py"]
+
+  db:
+    image: postgres:latest
+    environment: 
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db-data:/data
+    ports:
+      - 5432:5432
+  
+volumes:
+  db-data:
