@@ -9,7 +9,7 @@ services:
       - .env
     environment:
       PYTHONUNBUFFERED: 1
-    command: ["python", "app.py"]
+    command: ["python", "src/main.py"]
 
   db:
     image: postgres:latest
