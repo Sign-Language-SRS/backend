@@ -15,7 +15,9 @@ def create_app():
     # database migrations stuff
     from api.models import db
     db.init_app(app)
+
     # migrations
+    import api.models.reviews
     migrate = Migrate(app, db)
 
     # blueprints

@@ -12,6 +12,10 @@ Sign Language SRS Backend
 First, go into database migrations and change to the src/ folder
 
 Then perform:
+If migrations is not present for some reason
 1. flask db init
 2. flask db migrate
 3. flask db upgrade
+
+If migrations are present
+1. flask db upgrade
