@@ -1,11 +1,7 @@
-from flask import Flask
-from utils.db import connection_decorator
-
-app = Flask(__name__)
-
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
+from api.app import create_app, add_logging_to_file
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app = create_app()
+    add_logging_to_file()
+
+    app.run(host="0.0.0.0", port=80, debug=True)
