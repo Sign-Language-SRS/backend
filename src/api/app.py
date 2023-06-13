@@ -6,6 +6,7 @@ import logging
 
 # blueprints
 from api.route.home import home_api
+from api.route.reviews import reviews_api
 
 def create_app():
     app = Flask(__name__)
@@ -22,6 +23,7 @@ def create_app():
 
     # blueprints
     app.register_blueprint(home_api, url_prefix='/')
+    app.register_blueprint(reviews_api, url_prefix='/api/v1/')
     return app
 
 def add_logging_to_file(filename='srs.log', log_level=logging.INFO):

@@ -1,8 +1,11 @@
 import argparse
 from scripts.db import reset_db
+from scripts.japanese_prototype_setup import populate_prototypes, process_csv
 
 command_line_scripts = [
-  'reset_db'
+  'reset_db',
+  'japanese_init',
+  'csv_process'
 ]
 
 if __name__ == '__main__':
@@ -16,3 +19,9 @@ if __name__ == '__main__':
 
   if args.reset_db:
     reset_db()
+
+  if args.japanese_init:
+    populate_prototypes()
+
+  if args.csv_process:
+    process_csv()
