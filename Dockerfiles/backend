@@ -6,3 +6,7 @@ COPY src/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ src/
+
+# run the chmod on the scripts we want to potentially execute
+RUN chmod +x src/scripts/reset_db.sh
+RUN chmod +x src/scripts/init_japanese.sh

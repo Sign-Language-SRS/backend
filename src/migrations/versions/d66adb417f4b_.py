@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 556fcf93c376
+Revision ID: d66adb417f4b
 Revises: 
-Create Date: 2023-06-08 23:43:12.602792
+Create Date: 2023-06-15 08:02:41.811212
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '556fcf93c376'
+revision = 'd66adb417f4b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -34,12 +34,16 @@ def upgrade():
     )
     op.create_table('bin',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('from_review_type_id', sa.Integer(), nullable=False),
-    sa.Column('to_review_type_id', sa.Integer(), nullable=False),
-    sa.Column('time_delay_hours', sa.Integer(), nullable=False),
-    sa.Column('incorrect_answer_decrementer', sa.Integer(), nullable=False),
+    sa.Column('from_review_type_id', sa.Integer(), nullable=True),
+    sa.Column('to_review_type_id', sa.Integer(), nullable=True),
+    sa.Column('time_delay_hours', sa.Integer(), nullable=True),
+    sa.Column('wrong_answer_bin_id', sa.Integer(), nullable=True),
+    sa.Column('correct_answer_bin_id', sa.Integer(), nullable=True),
+    sa.Column('bin_type', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['correct_answer_bin_id'], ['bin.id'], ),
     sa.ForeignKeyConstraint(['from_review_type_id'], ['review_type.id'], ),
     sa.ForeignKeyConstraint(['to_review_type_id'], ['review_type.id'], ),
+    sa.ForeignKeyConstraint(['wrong_answer_bin_id'], ['bin.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
     )
@@ -57,7 +61,10 @@ def upgrade():
     op.create_table('vocabulary',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('card_id', sa.Integer(), nullable=False),
+    sa.Column('vocab', sa.String(length=256), nullable=False),
+    sa.Column('review_type_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['card_id'], ['card.id'], onupdate='CASCADE', ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['review_type_id'], ['review_type.id'], onupdate='CASCADE', ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
     )

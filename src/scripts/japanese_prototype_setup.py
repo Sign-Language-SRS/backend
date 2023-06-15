@@ -45,7 +45,7 @@ def populate_prototypes(engine):
       from_review_type_id = japanese.id,
       to_review_type_id = english.id,
       time_delay_hours = 5,
-      incorrect_answer_bin_id = japanese_to_english_one.id,
+      wrong_answer_bin_id = japanese_to_english_one.id,
       bin_type = BinTypeEnum.middle_bin
     )
     session.add(english_to_japanese_one)
@@ -55,7 +55,7 @@ def populate_prototypes(engine):
       from_review_type_id = sentence.id,
       to_review_type_id = english_sentence.id,
       time_delay_hours = 10,
-      incorrect_answer_bin_id = english_to_japanese_one.id,
+      wrong_answer_bin_id = english_to_japanese_one.id,
       bin_type = BinTypeEnum.middle_bin
     )
     session.add(sentence_to_english_one)
@@ -65,7 +65,7 @@ def populate_prototypes(engine):
       from_review_type_id = japanese.id,
       to_review_type_id = english.id,
       time_delay_hours = 1,
-      incorrect_answer_bin_id = sentence_to_english_one.id,
+      wrong_answer_bin_id = sentence_to_english_one.id,
       bin_type = BinTypeEnum.middle_bin
     )
     session.add(japanese_to_english_two)
@@ -75,7 +75,7 @@ def populate_prototypes(engine):
       from_review_type_id = japanese.id,
       to_review_type_id = english.id,
       time_delay_hours = 5,
-      incorrect_answer_bin_id = japanese_to_english_two.id,
+      wrong_answer_bin_id = japanese_to_english_two.id,
       bin_type = BinTypeEnum.middle_bin
     )
     session.add(english_to_japanese_two)
@@ -85,10 +85,24 @@ def populate_prototypes(engine):
       from_review_type_id = sentence.id,
       to_review_type_id = english_sentence.id,
       time_delay_hours = 10,
-      incorrect_answer_bin_id = english_to_japanese_two.id,
+      wrong_answer_bin_id = english_to_japanese_two.id,
       bin_type = BinTypeEnum.end_bin
     )
     session.add(sentence_to_english_two)
+    session.commit()
+
+    # then we need to link it forward, i.e. add in what the next bin is
+    def update_bin(start_bin: Bin, next_bin: Bin):
+      session.query(Bin)\
+        .filter(Bin.id == start_bin.id)\
+        .update({Bin.correct_answer_bin_id: next_bin.id}, synchronize_session=False)
+
+    update_bin(japanese_to_english_one, english_to_japanese_one)
+    update_bin(english_to_japanese_one, sentence_to_english_one)
+    update_bin(sentence_to_english_one, japanese_to_english_two)
+
+    update_bin(japanese_to_english_two, english_to_japanese_two)
+    update_bin(english_to_japanese_two, sentence_to_english_two)
     session.commit()
 
     # adding in cards now
