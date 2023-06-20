@@ -42,7 +42,12 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/deckStruct"
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
                         }
                     }
                 ],
@@ -50,7 +55,7 @@
                     "200": {
                         "description": "Successful response.",
                         "schema": {
-                            "$ref": "#/definitions/deckStruct"
+                            "$ref": "#/definitions/genericMessage"
                         }
                     }
                 }
@@ -67,10 +72,8 @@
                         "description": "Returns the reviews",
                         "schema": {
                             "type": "array",
-                            "properties": {
-                                "message": {
-                                    "type": "string"
-                                }
+                            "items": {
+                                "$ref": "#/definitions/cardStruct"
                             }
                         }
                     }
@@ -271,6 +274,9 @@
                     "type": "string"
                 }
             }
+        },
+        "genericMessage": {
+            "type": "string"
         }
     }
 }
