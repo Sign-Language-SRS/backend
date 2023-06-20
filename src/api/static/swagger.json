@@ -1,0 +1,282 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "SRS Backend API",
+        "description": "API for the SRS Backend System",
+        "version": "1.0"
+    },
+    "basePath": "/api/v1/",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/decks": {
+            "get": {
+                "summary": "Gets the decks",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/deckStruct"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "creates a new deck",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response.",
+                        "schema": {
+                            "$ref": "#/definitions/genericMessage"
+                        }
+                    }
+                }
+            }
+        },
+        "/decks/{deckId}/reviews": {
+            "get": {
+                "summary": "Gets the current reviews, i.e. all the cards where time to review was in the past",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the reviews",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/cardStruct"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Does a review, and updates the deck because of it",
+                "responses": {
+                    "200": {
+                        "description": "Successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/reviewInput"
+                            }
+                        }
+                    }
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "deckId",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer",
+                    "format": "integer"
+                }
+            ]
+        },
+        "/decks/{deckId}/cards": {
+            "get": {
+                "summary": "gets all the cards from a deck",
+                "responses": {
+                    "200": {
+                        "description": "Successful response.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "deckId",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer",
+                    "format": "integer"
+                }
+            ]
+        },
+        "/decks/{deckId}/cards/{cardId}": {
+            "get": {
+                "summary": "gets a single card from a deck",
+                "responses": {
+                    "200": {
+                        "description": "Successful response.",
+                        "schema": {
+                            "$ref": "#/definitions/cardStruct"
+                        }
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "name": "deckId",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer",
+                    "format": "integer"
+                },
+                {
+                    "name": "cardId",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer",
+                    "format": "integer"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "deckStruct": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "created_on": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "description": "What the deck structure looks like"
+        },
+        "reviewInput": {
+            "type": "object",
+            "properties": {
+                "correct": {
+                    "type": "boolean"
+                },
+                "card_id": {
+                    "type": "integer"
+                }
+            },
+            "description": "Input to make review inputs work"
+        },
+        "cardStruct": {
+            "type": "object",
+            "properties": {
+                "bin": {
+                    "$ref": "#/definitions/binStruct"
+                },
+                "bin_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deck_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "next_review": {
+                    "type": "string"
+                },
+                "vocabs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vocabStruct"
+                    }
+                }
+            }
+        },
+        "binStruct": {
+            "type": "object",
+            "properties": {
+                "bin_type": {
+                    "type": "integer"
+                },
+                "correct_answer_bin_id": {
+                    "type": "integer"
+                },
+                "from_review_type_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "time_delay_hours": {
+                    "type": "integer"
+                },
+                "to_review_type_id": {
+                    "type": "integer"
+                },
+                "wrong_answer_bin_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "vocabStruct": {
+            "type": "object",
+            "properties": {
+                "card_id": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "review_type_id": {
+                    "type": "integer"
+                },
+                "vocab": {
+                    "type": "string"
+                }
+            }
+        },
+        "genericMessage": {
+            "type": "string"
+        }
+    }
+}
