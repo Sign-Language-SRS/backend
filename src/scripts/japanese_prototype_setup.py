@@ -35,18 +35,20 @@ def populate_prototypes(engine):
     japanese_to_english_one = Bin(
       from_review_type_id = japanese.id,
       to_review_type_id = english.id,
-      time_delay_hours = 1,
-      bin_type = BinTypeEnum.start_bin
+      time_delay_hours = 0,
+      bin_type = BinTypeEnum.start_bin,
+      id = 1
     )
     session.add(japanese_to_english_one)
     session.commit()
 
     english_to_japanese_one = Bin(
-      from_review_type_id = japanese.id,
-      to_review_type_id = english.id,
-      time_delay_hours = 5,
+      from_review_type_id = english.id,
+      to_review_type_id = japanese.id,
+      time_delay_hours = 1,
       wrong_answer_bin_id = japanese_to_english_one.id,
-      bin_type = BinTypeEnum.middle_bin
+      bin_type = BinTypeEnum.middle_bin,
+      id = 2
     )
     session.add(english_to_japanese_one)
     session.commit()
@@ -54,9 +56,10 @@ def populate_prototypes(engine):
     sentence_to_english_one = Bin(
       from_review_type_id = sentence.id,
       to_review_type_id = english_sentence.id,
-      time_delay_hours = 10,
+      time_delay_hours = 2,
       wrong_answer_bin_id = english_to_japanese_one.id,
-      bin_type = BinTypeEnum.middle_bin
+      bin_type = BinTypeEnum.middle_bin,
+      id = 3
     )
     session.add(sentence_to_english_one)
     session.commit()
@@ -64,19 +67,21 @@ def populate_prototypes(engine):
     japanese_to_english_two = Bin(
       from_review_type_id = japanese.id,
       to_review_type_id = english.id,
-      time_delay_hours = 1,
+      time_delay_hours = 0,
       wrong_answer_bin_id = sentence_to_english_one.id,
-      bin_type = BinTypeEnum.middle_bin
+      bin_type = BinTypeEnum.middle_bin,
+      id = 4
     )
     session.add(japanese_to_english_two)
     session.commit()
 
     english_to_japanese_two = Bin(
-      from_review_type_id = japanese.id,
-      to_review_type_id = english.id,
-      time_delay_hours = 5,
+      from_review_type_id = english.id,
+      to_review_type_id = japanese.id,
+      time_delay_hours = 1,
       wrong_answer_bin_id = japanese_to_english_two.id,
-      bin_type = BinTypeEnum.middle_bin
+      bin_type = BinTypeEnum.middle_bin,
+      id = 5
     )
     session.add(english_to_japanese_two)
     session.commit()
@@ -84,9 +89,10 @@ def populate_prototypes(engine):
     sentence_to_english_two = Bin(
       from_review_type_id = sentence.id,
       to_review_type_id = english_sentence.id,
-      time_delay_hours = 10,
+      time_delay_hours = 2,
       wrong_answer_bin_id = english_to_japanese_two.id,
-      bin_type = BinTypeEnum.end_bin
+      bin_type = BinTypeEnum.end_bin,
+      id = 6
     )
     session.add(sentence_to_english_two)
     session.commit()
