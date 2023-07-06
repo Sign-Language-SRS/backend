@@ -4,6 +4,9 @@ from flask_migrate import Migrate
 from api.config import Config
 import logging
 
+# cors handling
+from flask_cors import CORS
+
 # blueprints
 from api.route.home import home_api
 from api.route.reviews import reviews_api
@@ -15,6 +18,9 @@ def create_app():
     app = Flask(__name__)
     # config magic    
     app.config.from_object(Config)
+
+    # cors handling
+    CORS(app)
 
     # database migrations stuff
     from api.models import db
@@ -39,7 +45,6 @@ def create_app():
             'app_name': "SRS Sign Language Backend"
         }
     )
-
     app.register_blueprint(swaggerui_blueprint)
     return app
 
